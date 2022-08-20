@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Pylingdocs editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{url_for('vue.static', filename='bundle.css')}}">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='examples.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styling.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='alignment.css')}}">
+</head>
+<body>
+    <div id="app">
+        <v-app>
+            <v-app-bar app clipped-left dense>
+                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn v-on="on" icon><v-icon dark>mdi-file-tree</v-icon></v-btn>
+                    </template>
+                    <span>Structure</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn  icon><v-icon dark>mdi-table</v-icon></v-btn>
+                    </template>
+                    <span>Tables</span>
+                </v-tooltip>
+                <v-divider vertical></v-divider>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn v-on="on" color="primary" icon :disabled="modified[currentFile] ? false : true" v-on:click="saveFile"><v-icon dark>mdi-content-save</v-icon></v-btn>
+                    </template>
+                    <span>Save</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn v-on="on" icon ><v-icon dark>mdi-cog</v-icon></v-btn>
+                    </template>
+                    <span>Settings</span>
+                </v-tooltip>
+                <v-spacer></v-spacer>                
+                <v-spacer></v-spacer>
+                <v-btn-toggle v-model="contentView">
+                    <v-btn value="editor">
+                      <v-icon>mdi-text-box-edit-outline</v-icon>
+                  </v-btn>
+
+                  <v-btn value="both">
+                      <v-icon>mdi-book-open-outline</v-icon>
+                  </v-btn>
+
+                  <v-btn value="viewer">
+                      <v-icon>mdi-text-box-outline</v-icon>
+                  </v-btn>
+
+              </v-btn-toggle>
+
+                <v-btn-toggle value=false v-model="autoPreview">
+                    <v-btn value=true>
+                      <v-icon>mdi-autorenew</v-icon>
+                  </v-btn>
+              </v-btn-toggle>
+
+          </v-col>
+          <v-btn color="primary" v-on:click="render"><v-icon dark>mdi-bike-fast</v-icon></v-btn>
+      </v-app-bar>
+
+      <v-navigation-drawer app clipped v-model="drawer">
+        <div align="center" class="pa-2">TOC</div>
+        <v-treeview
+            activatable
+            dense
+            :active="currentSection"
+            :items="tocItems"
+            @update:active="loadPart"
+        >
+        </v-treeview>
+        <v-divider></v-divider>
+        <div align="center" class="pa-2">Files</div>
+        <v-list nav dense>
+            <v-list-item-group mandatory v-model="currentFile">
+                <v-list-item
+                v-for="(key, i) in files"
+                :key="key['id']"
+                :value="key['id']"
+                :style="modified[key['id']] ? 'color: red' : 'color: blue'"
+                :color="modified[key['id']] ? 'red' : 'blue'"
+                link
+                >
+                <v-list-item-content>
+                    <v-list-item-title v-if="modified[key['id']]" :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%} (edited)</v-list-item-title>
+
+                    <v-list-item-title v-else :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%}</v-list-item-title>
+
+                </v-list-item-content>
+            </v-list-item>
+        </v-list-item-group>
+    </v-list>
+</v-navigation-drawer>        
+
+<v-main>
+    <v-container fluid>
+        <v-row>
+            <v-col v-if="contentView=='both'" cols="6">
+                <v-card height="87vh" class="scroll">
+                    <my-markdown-editor>
+                    </my-markdown-editor></v-card>
+                    <h1></h1>
+                </v-col>
+
+                <v-col v-else-if="contentView=='editor'" cols="12">
+                    <v-card height="87vh" class="scroll">
+                        <my-markdown-editor></my-markdown-editor></v-card>
+                        <h1></h1>
+                    </v-col>
+
+                    <v-col v-else><my-markdown-editor hidden="true"></my-markdown-editor></v-col>
+                    <v-col v-if="contentView=='both'" cols="6">
+                        <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
+                    </v-col>
+                    <v-col v-else-if="contentView=='viewer'" cols="12">
+                        <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-main>
+
+    </v-app>
+</div>
+
+
+
+<script src="{{url_for('vue.static', filename='main.js')}}"></script>
+<script src="{{url_for('static', filename='examples.js')}}"></script> 
+<script src="{{url_for('static', filename='glossing.js')}}"></script> 
+<script src="{{url_for('static', filename='crossref.js')}}"></script> 
+<script src="{{url_for('static', filename='alignment.js')}}"></script> 
+</body>
+
+</html>

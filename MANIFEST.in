@@ -1,0 +1,4 @@
+include CITATION.cff
+include LICENSE
+include README.md
+recursive-include src/pylingdocs-gui
