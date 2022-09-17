@@ -18,5 +18,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release
 
-[Unreleased]: https://github.com/fmatter/pylingdocs-gui/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...HEAD
 [0.0.1]: https://github.com/fmatter/pylingdocs-gui/releases/tag/0.0.1
