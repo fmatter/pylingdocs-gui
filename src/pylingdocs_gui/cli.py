@@ -13,7 +13,6 @@ from pylingdocs_gui.editor import Editor
     "--output-dir", default=OUTPUT_DIR, help="Folder where output is generated."
 )
 def main(cldf, source, output_dir):
-    print("WEEEE")
     e = Editor(cldf, source, output_dir)
     e.run()
 
