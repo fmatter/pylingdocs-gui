@@ -20,15 +20,22 @@
         <v-app>
             <v-app-bar app clipped-left dense>
                 <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-divider vertical></v-divider>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" icon><v-icon dark>mdi-file-tree</v-icon></v-btn>
+                        <v-btn v-on="on" icon><v-icon dark>mdi-information</v-icon></v-btn>
                     </template>
-                    <span>Structure</span>
+                    <span>Metadata</span>
                 </v-tooltip>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn  icon><v-icon dark>mdi-table</v-icon></v-btn>
+                        <v-btn v-on="on" icon><v-icon dark>mdi-folder-multiple-image</v-icon></v-btn>
+                    </template>
+                    <span>Figures</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn v-on="on" icon><v-icon dark>mdi-table</v-icon></v-btn>
                     </template>
                     <span>Tables</span>
                 </v-tooltip>
@@ -141,7 +148,7 @@
 >
     <v-container>
   
-      <v-textarea v-model="settings" rows="20"        style="width:50vw;" ></v-textarea>
+      <v-textarea v-model="settings" rows="20" style="width:50vw;" ></v-textarea>
 <v-btn
 @click="saveSettings"
 color="primary"
