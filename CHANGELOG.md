@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* TOC is updated when saving files (though not immediately)
+
 ## [0.0.1] - 2022-08-20
 
 Initial release
