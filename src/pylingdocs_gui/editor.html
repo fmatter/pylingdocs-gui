@@ -41,7 +41,7 @@
                 </v-tooltip>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" icon ><v-icon dark>mdi-cog</v-icon></v-btn>
+                        <v-btn v-on="on" @click="settingsOverlay = !settingsOverlay" icon ><v-icon dark>mdi-cog</v-icon></v-btn>
                     </template>
                     <span>Settings</span>
                 </v-tooltip>
@@ -62,47 +62,47 @@
 
               </v-btn-toggle>
 
-                <v-btn-toggle value=false v-model="autoPreview">
-                    <v-btn value=true>
-                      <v-icon>mdi-autorenew</v-icon>
-                  </v-btn>
-              </v-btn-toggle>
+              <v-btn-toggle value=false v-model="autoPreview">
+                <v-btn value=true>
+                  <v-icon>mdi-autorenew</v-icon>
+              </v-btn>
+          </v-btn-toggle>
 
-          </v-col>
-          <v-btn color="primary" v-on:click="render"><v-icon dark>mdi-bike-fast</v-icon></v-btn>
-      </v-app-bar>
+      </v-col>
+      <v-btn color="primary" v-on:click="render"><v-icon dark>mdi-bike-fast</v-icon></v-btn>
+  </v-app-bar>
 
-      <v-navigation-drawer app clipped v-model="drawer">
-        <div align="center" class="pa-2">TOC</div>
-        <v-treeview
-            activatable
-            dense
-            :active="currentSection"
-            :items="tocItems"
-            @update:active="loadPart"
+  <v-navigation-drawer app clipped v-model="drawer">
+    <div align="center" class="pa-2">TOC</div>
+    <v-treeview
+    activatable
+    dense
+    :active="currentSection"
+    :items="tocItems"
+    @update:active="loadPart"
+    >
+</v-treeview>
+<v-divider></v-divider>
+<div align="center" class="pa-2">Files</div>
+<v-list nav dense>
+    <v-list-item-group mandatory v-model="currentFile">
+        <v-list-item
+        v-for="(key, i) in files"
+        :key="key['id']"
+        :value="key['id']"
+        :style="modified[key['id']] ? 'color: red' : 'color: blue'"
+        :color="modified[key['id']] ? 'red' : 'blue'"
+        link
         >
-        </v-treeview>
-        <v-divider></v-divider>
-        <div align="center" class="pa-2">Files</div>
-        <v-list nav dense>
-            <v-list-item-group mandatory v-model="currentFile">
-                <v-list-item
-                v-for="(key, i) in files"
-                :key="key['id']"
-                :value="key['id']"
-                :style="modified[key['id']] ? 'color: red' : 'color: blue'"
-                :color="modified[key['id']] ? 'red' : 'blue'"
-                link
-                >
-                <v-list-item-content>
-                    <v-list-item-title v-if="modified[key['id']]" :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%} (edited)</v-list-item-title>
+        <v-list-item-content>
+            <v-list-item-title v-if="modified[key['id']]" :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%} (edited)</v-list-item-title>
 
-                    <v-list-item-title v-else :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%}</v-list-item-title>
+            <v-list-item-title v-else :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%}</v-list-item-title>
 
-                </v-list-item-content>
-            </v-list-item>
-        </v-list-item-group>
-    </v-list>
+        </v-list-item-content>
+    </v-list-item>
+</v-list-item-group>
+</v-list>
 </v-navigation-drawer>        
 
 <v-main>
@@ -111,28 +111,52 @@
             <v-col v-if="contentView=='both'" cols="6">
                 <v-card height="87vh" class="scroll">
                     <my-markdown-editor>
-                    </my-markdown-editor></v-card>
-                    <h1></h1>
-                </v-col>
+                    </my-markdown-editor>
+                </v-card>
+                <h1></h1>
+            </v-col>
 
-                <v-col v-else-if="contentView=='editor'" cols="12">
-                    <v-card height="87vh" class="scroll">
-                        <my-markdown-editor></my-markdown-editor></v-card>
-                        <h1></h1>
-                    </v-col>
+            <v-col v-else-if="contentView=='editor'" cols="12">
+                <v-card height="87vh" class="scroll">
+                    <my-markdown-editor></my-markdown-editor>
+                </v-card>
+                <h1></h1>
+            </v-col>
 
-                    <v-col v-else><my-markdown-editor hidden="true"></my-markdown-editor></v-col>
-                    <v-col v-if="contentView=='both'" cols="6">
-                        <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
-                    </v-col>
-                    <v-col v-else-if="contentView=='viewer'" cols="12">
-                        <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-main>
+            <v-col v-else><my-markdown-editor hidden="true"></my-markdown-editor></v-col>
+            <v-col v-if="contentView=='both'" cols="6">
+                <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
+            </v-col>
+            <v-col v-else-if="contentView=='viewer'" cols="12">
+                <v-card height="87vh" class="scroll" style="overflow-y:auto;" id="output"><article v-html="text"></article></v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+</v-main>
 
-    </v-app>
+<v-overlay
+    :absolute="absolute"
+    :opacity=0.8
+    :value="settingsOverlay"
+>
+    <v-container>
+  
+      <v-textarea v-model="settings" rows="20"        style="width:50vw;" ></v-textarea>
+<v-btn
+@click="saveSettings"
+color="primary"
+>
+Save
+</v-btn>
+<v-btn
+@click="settingsOverlay = false"
+>
+Close
+</v-btn>
+</v-container>
+</v-overlay>
+
+</v-app>
 </div>
 
 

@@ -19,6 +19,7 @@ from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 import webbrowser
+from pathlib import Path
 
 try:
     from importlib.resources import files  # pragma: no cover
@@ -60,6 +61,12 @@ class Editor:
         self.contents = load_content(
             structure_file=self.structure_file, source_dir=self.source / CONTENT_FOLDER
         )
+        s_path = Path(self.source) / "pylingdocs.cfg"
+        if s_path.is_file():
+            with open(s_path, "r", encoding="utf-8") as f:
+                self.settings = f.read()
+        else:
+            self.settings = ""
 
     def run(self):
 
@@ -101,6 +108,16 @@ class Editor:
         def getpart(part_id):
             return jsonify(self.contents[part_id]["content"])
 
+        @app.route("/settings", methods=["POST", "GET"])
+        def settings():
+            if request.method == "GET":
+                return jsonify(self.settings)
+            elif request.method == "POST":
+                s_path = Path(self.source) / "pylingdocs.cfg"
+                with open(s_path, "w", encoding="utf-8") as f:
+                    f.write(request.json["text"])
+                return "Good"
+
         @app.route("/getparts")
         def getparts():
             return jsonify(self.contents)
@@ -111,5 +128,5 @@ class Editor:
                 [{"id": x, "name": y["filename"]} for x, y in self.contents.items()]
             )
 
-        webbrowser.open('localhost:5000/')
+        webbrowser.open("localhost:5000/")
         app.run(port=5000)
