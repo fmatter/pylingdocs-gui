@@ -23,19 +23,25 @@
                 <v-divider vertical></v-divider>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" icon><v-icon dark>mdi-information</v-icon></v-btn>
+                        <v-btn v-on="on" @click="loadConf('metadata')" icon><v-icon dark>mdi-text-box-search-outline</v-icon></v-btn>
                     </template>
                     <span>Metadata</span>
                 </v-tooltip>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" icon><v-icon dark>mdi-folder-multiple-image</v-icon></v-btn>
+                        <v-btn v-on="on" @click="loadConf('structure')" icon><v-icon dark>mdi-file-tree</v-icon></v-btn>
+                    </template>
+                    <span>Structure</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template #activator="{ on }">
+                        <v-btn v-on="on" @click="loadConf('figures')" icon><v-icon dark>mdi-folder-multiple-image</v-icon></v-btn>
                     </template>
                     <span>Figures</span>
                 </v-tooltip>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" icon><v-icon dark>mdi-table</v-icon></v-btn>
+                        <v-btn v-on="on" @click="loadConf('tables')" icon><v-icon dark>mdi-table</v-icon></v-btn>
                     </template>
                     <span>Tables</span>
                 </v-tooltip>
@@ -48,7 +54,7 @@
                 </v-tooltip>
                 <v-tooltip bottom>
                     <template #activator="{ on }">
-                        <v-btn v-on="on" @click="settingsOverlay = !settingsOverlay" icon ><v-icon dark>mdi-cog</v-icon></v-btn>
+                        <v-btn v-on="on" @click="loadConf('settings')" icon ><v-icon dark>mdi-cog</v-icon></v-btn>
                     </template>
                     <span>Settings</span>
                 </v-tooltip>
@@ -149,12 +155,12 @@
 >
     <v-container>
   
-      <v-textarea v-model="settings" rows="20" style="width:50vw;" ></v-textarea>
+      <v-textarea v-on:click.stop="settingsOverlay = true" v-model="confFile" rows="20" style="width:50vw;" ></v-textarea>
 <v-btn
-@click="saveSettings"
+@click="writeConf"
 color="primary"
 >
-Save file
+<v-icon dark>mdi-content-save</v-icon>
 </v-btn>
 </v-container>
 </v-overlay>

@@ -1,25 +1,27 @@
 import logging
+import webbrowser
+from pathlib import Path
+from flask import Blueprint
 from flask import Flask
 from flask import jsonify
 from flask import render_template
 from flask import request
-from flask import Blueprint
 from flask import send_file
 from flask_cors import CORS
 from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.config import DATA_DIR
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import load_content
+from pylingdocs.helpers import read_config_file, write_config_file
 from pylingdocs.helpers import write_file as write
 from pylingdocs.output import HTML
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
-import webbrowser
-from pathlib import Path
+
 
 try:
     from importlib.resources import files  # pragma: no cover
@@ -61,12 +63,6 @@ class Editor:
         self.contents = load_content(
             structure_file=self.structure_file, source_dir=self.source / CONTENT_FOLDER
         )
-        s_path = Path(self.source) / "pylingdocs.cfg"
-        if s_path.is_file():
-            with open(s_path, "r", encoding="utf-8") as f:
-                self.settings = f.read()
-        else:
-            self.settings = ""
 
     def run(self):
 
@@ -99,6 +95,15 @@ class Editor:
             self.load()
             return "Good"
 
+        @app.route("/conf/<file>", methods=["POST", "GET"])
+        def conf(file):
+            if request.method == "GET":
+                return jsonify(read_config_file(file))
+            elif request.method == "POST":
+                write_config_file(file, request.json["text"])
+                self.load()
+                return "Good"
+
         # serve images directly from the input folder
         @app.route("/<path:filename>")
         def download_file(filename):
@@ -107,16 +112,6 @@ class Editor:
         @app.route("/getpart/<part_id>")
         def getpart(part_id):
             return jsonify(self.contents[part_id]["content"])
-
-        @app.route("/settings", methods=["POST", "GET"])
-        def settings():
-            if request.method == "GET":
-                return jsonify(self.settings)
-            elif request.method == "POST":
-                s_path = Path(self.source) / "pylingdocs.cfg"
-                with open(s_path, "w", encoding="utf-8") as f:
-                    f.write(request.json["text"])
-                return "Good"
 
         @app.route("/getparts")
         def getparts():
