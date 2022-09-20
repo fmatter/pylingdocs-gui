@@ -108,9 +108,9 @@
         link
         >
         <v-list-item-content>
-            <v-list-item-title v-if="modified[key['id']]" :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%} (edited)</v-list-item-title>
+            <v-list-item-title v-if="modified[key['id']]" :id="'file:'+key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%} (edited)</v-list-item-title>
 
-            <v-list-item-title v-else :id="key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%}</v-list-item-title>
+            <v-list-item-title v-else :id="'file:'+key['id']">{%raw%}{{{%endraw%}i+1{%raw%}}}{%endraw%}.    {%raw%}{{{%endraw%}key["name"]{%raw%}}}{%endraw%}</v-list-item-title>
 
         </v-list-item-content>
     </v-list-item>
