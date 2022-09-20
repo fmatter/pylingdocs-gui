@@ -145,6 +145,7 @@
     :absolute=true
     :opacity=0.8
     :value="settingsOverlay"
+    @click="settingsOverlay = false"
 >
     <v-container>
   
@@ -153,12 +154,7 @@
 @click="saveSettings"
 color="primary"
 >
-Save
-</v-btn>
-<v-btn
-@click="settingsOverlay = false"
->
-Close
+Save file
 </v-btn>
 </v-container>
 </v-overlay>
