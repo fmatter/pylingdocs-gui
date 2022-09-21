@@ -61,31 +61,58 @@
                 <v-spacer></v-spacer>                
                 <v-spacer></v-spacer>
                 <v-btn-toggle v-model="contentView" borderless mandatory>
-                    <v-btn value="editor">
-                      <v-icon>mdi-text-box-edit-outline</v-icon>
-                  </v-btn>
 
-                  <v-btn value="both">
-                      <v-icon>mdi-book-open-outline</v-icon>
-                  </v-btn>
+                    <v-tooltip bottom>
+                        <template #activator="{ on }">
+                            <v-btn v-on="on" value="editor">
+                              <v-icon>mdi-text-box-edit-outline</v-icon>
+                          </v-btn>
+                      </template>                  
+                      <span>Show only editor</span>
+                  </v-tooltip>
 
-                  <v-btn value="viewer">
+                  <v-tooltip bottom>
+                    <template #activator="{ on }">
+                      <v-btn v-on="on" value="both">
+                          <v-icon>mdi-book-open-outline</v-icon>
+                      </v-btn>
+                  </template>                   
+                  <span>Show editor and viewer</span>
+              </v-tooltip>
+
+              <v-tooltip bottom>
+                <template #activator="{ on }">
+                  <v-btn v-on="on" value="viewer">
                       <v-icon>mdi-text-box-outline</v-icon>
                   </v-btn>
+              </template>
+              <span>Show only viewer</span>
+          </v-tooltip>
+      </v-btn-toggle>
 
-              </v-btn-toggle>
 
-              <v-btn-toggle v-model="autoPreview">
-                <v-btn value="yes">
+      <v-btn-toggle v-model="autoPreview">
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+                <v-btn v-on="on" value="yes">
                   <v-icon>mdi-autorenew</v-icon>
               </v-btn>
-          </v-btn-toggle>
+          </template>
+          <span>Toggle autocompilation</span>
+      </v-tooltip>
+  </v-btn-toggle>
 
-      </v-col>
-      <v-btn color="primary" v-on:click="render"><v-icon dark>mdi-bike-fast</v-icon></v-btn>
-  </v-app-bar>
+</v-col>
+              <v-tooltip bottom>
+                <template #activator="{ on }">
+<v-btn :disabled="autoPreview ? true : false" color="primary" v-on="on" v-on:click="render" icon><v-icon dark>mdi-cog-sync-outline</v-icon></v-btn>
+              </template>
+              <span>Compile</span>
+          </v-tooltip>
 
-  <v-navigation-drawer app clipped v-model="drawer">
+</v-app-bar>
+
+<v-navigation-drawer app clipped v-model="drawer">
     <div align="center" class="pa-2">TOC</div>
     <v-treeview
     activatable
@@ -148,19 +175,19 @@
 </v-main>
 
 <v-overlay
-    :absolute=true
-    :opacity=0.8
-    :value="settingsOverlay"
-    @click="settingsOverlay = false"
+:absolute=true
+:opacity=0.8
+:value="settingsOverlay"
+@click="settingsOverlay = false"
 >
-    <v-container>
-  
-      <v-textarea v-on:click.stop="settingsOverlay = true" v-model="confFile" rows="20" style="width:50vw;" ></v-textarea>
-<v-btn
-@click="writeConf"
-color="primary"
->
-<v-icon dark>mdi-content-save</v-icon>
+<v-container>
+
+  <v-textarea v-on:click.stop="settingsOverlay = true" v-model="confFile" rows="20" style="width:50vw;" ></v-textarea>
+  <v-btn
+  @click="writeConf"
+  color="primary"
+  >
+  <v-icon dark>mdi-content-save</v-icon>
 </v-btn>
 </v-container>
 </v-overlay>
