@@ -24,10 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * auto-build toggle
 * include all non-python files in MANIFEST.in
 
-## [0.0.1] - 2022-08-20
+## 0.0.1 - 2022-08-20
 
 Initial release
 
 [Unreleased]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.2...HEAD
-[0.0.2]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...0.0.2
-[0.0.1]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...0.0.1
+[0.0.2]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...v0.0.2
