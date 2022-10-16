@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* editing settings and other conf files
+* ability to edit settings and other conf files
 * tooltips
 
 ### Removed
@@ -20,10 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * no more jumping to file entries in nav bar
 * nicer views toggle
 * auto-build toggle
+* include all non-python files in MANIFEST.in
 
 ## [0.0.1] - 2022-08-20
 
 Initial release
 
 [Unreleased]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...HEAD
-[0.0.1]: https://github.com/fmatter/pylingdocs-gui/releases/tag/0.0.1
+[0.0.1]: https://github.com/fmatter/pylingdocs-gui/compare/0.0.1...0.0.1
