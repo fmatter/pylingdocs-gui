@@ -14,7 +14,8 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import load_content
-from pylingdocs.helpers import read_config_file, write_config_file
+from pylingdocs.helpers import read_config_file
+from pylingdocs.helpers import write_config_file
 from pylingdocs.helpers import write_file as write
 from pylingdocs.output import HTML
 from pylingdocs.preprocessing import postprocess
