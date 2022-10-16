@@ -1,6 +1,5 @@
 import logging
 import webbrowser
-from pathlib import Path
 from flask import Blueprint
 from flask import Flask
 from flask import jsonify
@@ -99,11 +98,12 @@ class Editor:
         def conf(file):
             if request.method == "GET":
                 return jsonify(read_config_file(file))
-            elif request.method == "POST":
+            if request.method == "POST":
                 write_config_file(file, request.json["text"])
                 self.load()
                 return "Good"
-
+            return None
+            
         # serve images directly from the input folder
         @app.route("/<path:filename>")
         def download_file(filename):

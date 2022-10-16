@@ -1,5 +1,4 @@
 """Console script for pylingdocs-gui."""
-import sys
 import click
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import OUTPUT_DIR
@@ -18,4 +17,4 @@ def main(cldf, source, output_dir):
 
 
 if __name__ == "__main__":
-    main()
+    main() # pylint: disable=no-value-for-parameter
