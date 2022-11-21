@@ -1,4 +1,5 @@
 1. See if it runs.
-2. `make changelog`
-3. `bump2version release/minor/major`
-4. `make release`
+2. Update pylingdocs dependency
+3. `make changelog`
+4. `bump2version release/minor/major`
+5. `make release`
